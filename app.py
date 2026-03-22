@@ -1,18 +1,18 @@
 import streamlit as st
 
 # Заглавие
-st.title("🖼️ Моята галерия от любими животни")
+st.title("Галерия")
 
 # Списък със животни (започваме празен или с пример)
 if "animals" not in st.session_state:
     st.session_state.animals = [
-        {"име": "Котка", "описание": "Малко пухкаво животинче", 
+        {"име": "Котка", "описание": "Котка", 
          "картинка": "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_1280.jpg"},
         {"име": "Куче", "описание": "Най-добрият приятел на човека", 
          "картинка": "https://cdn.pixabay.com/photo/2015/03/26/09/54/dog-690176_1280.jpg"}
     ]
 
-st.header("➕ Добави ново животно")
+st.header("Добави ново животно")
 name = st.text_input("Име на животното")
 description = st.text_area("Описание")
 image_url = st.text_input("URL на картинка")
@@ -30,7 +30,7 @@ if st.button("Добави"):
 
 # Премахване
 if st.session_state.animals:
-    st.header("🗑️ Премахни животно")
+    st.header("Премахни животно")
     remove_name = st.selectbox("Избери животно за премахване", 
                                [a["име"] for a in st.session_state.animals])
     if st.button("Премахни"):
@@ -38,7 +38,7 @@ if st.session_state.animals:
         st.success(f"{remove_name} е премахнато!")
 
 # Визуализация на галерията
-st.header("🎨 Галерия")
+st.header("Галерия")
 if st.session_state.animals:
     cols = st.columns(3)  # 3 колонки
     for idx, animal in enumerate(st.session_state.animals):
