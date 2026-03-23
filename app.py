@@ -1,50 +1,46 @@
 import streamlit as st
+import pandas as pd
 
-# Заглавие
-st.title("Галерия")
+st.title("Галерия с животни")
 
-# Списък със животни (започваме празен или с пример)
+# Празен списък
 if "animals" not in st.session_state:
-    st.session_state.animals = [
-        {"име": "Котка", "описание": "Котка", 
-         "картинка": "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_1280.jpg"},
-        {"име": "Куче", "описание": "Най-добрият приятел на човека", 
-         "картинка": "https://cdn.pixabay.com/photo/2015/03/26/09/54/dog-690176_1280.jpg"}
-    ]
+    st.session_state.animals = []
 
-st.header("Добави ново животно")
-name = st.text_input("Име на животното")
-description = st.text_area("Описание")
-image_url = st.text_input("URL на картинка")
+# Добавяне
+name = st.text_input("Име")
+desc = st.text_input("Описание")
+img = st.text_input("URL на картинка")
 
 if st.button("Добави"):
-    if name and description and image_url:
+    if name and desc and img:
         st.session_state.animals.append({
             "име": name,
-            "описание": description,
-            "картинка": image_url
+            "описание": desc,
+            "картинка": img
         })
-        st.success(f"{name} е добавено!")
+        st.success("Добавено!")
     else:
-        st.warning("Попълнете всички полета!")
+        st.warning("Попълни всичко!")
 
-# Премахване
+# Изтриване
+st.header("Изтриване")
 if st.session_state.animals:
-    st.header("Премахни животно")
-    remove_name = st.selectbox("Избери животно за премахване", 
-                               [a["име"] for a in st.session_state.animals])
+    names = [a["име"] for a in st.session_state.animals]
+    to_delete = st.selectbox("Избери животно", names)
+
     if st.button("Премахни"):
-        st.session_state.animals = [a for a in st.session_state.animals if a["име"] != remove_name]
-        st.success(f"{remove_name} е премахнато!")
-
-# Визуализация на галерията
-st.header("Галерия")
-if st.session_state.animals:
-    cols = st.columns(3)  # 3 колонки
-    for idx, animal in enumerate(st.session_state.animals):
-        with cols[idx % 3]:
-            st.subheader(animal["име"])
-            st.image(animal["картинка"], use_column_width=True)
-            st.write(animal["описание"])
+        st.session_state.animals = [
+            a for a in st.session_state.animals if a["име"] != to_delete
+        ]
+        st.success("Премахнато!")
 else:
-    st.info("Галерията е празна. Добавете животни!")
+    st.info("Няма какво да се трие.")
+
+# Таблица
+st.header("Таблица")
+if st.session_state.animals:
+    df = pd.DataFrame(st.session_state.animals)
+    st.dataframe(df)
+else:
+    st.info("Няма добавени животни.")
