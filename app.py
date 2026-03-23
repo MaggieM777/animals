@@ -24,7 +24,7 @@ if st.button("Добави"):
     else:
         st.warning("Попълнете всички полета!")
 
-# Премахване (КЛАСИЧЕСКИ НАЧИН)
+# Премахване
 if st.session_state.animals:
     st.header("Премахни животно")
 
